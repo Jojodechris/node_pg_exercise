@@ -9,6 +9,7 @@ CASCADE;
 DROP TABLE IF EXISTS industries_companies
 CASCADE;
 
+-- data.sql
 
 CREATE TABLE companies (
     code text PRIMARY KEY,
@@ -39,6 +40,7 @@ CREATE TABLE invoices (
     CONSTRAINT invoices_amt_check CHECK ((amt > (0)::double precision))
 );
 
+
 INSERT INTO companies
   VALUES ('apple', 'Apple Computer', 'Maker of OSX.'),
          ('ibm', 'IBM', 'Big blue.');
@@ -48,6 +50,14 @@ INSERT INTO industries
   VALUES ('tech', 'Technology');
 
 
+
+INSERT INTO industries_companies
+VALUES('tech','apple'),
+('tech','ibm');
+
+
+
+
 INSERT INTO invoices (comp_Code, amt, paid, paid_date)
   VALUES ('apple', 100, false, null),
          ('apple', 200, false, null),
@@ -55,8 +65,4 @@ INSERT INTO invoices (comp_Code, amt, paid, paid_date)
          ('ibm', 400, false, null);
 
 
-
-INSERT INTO industries_companies
-VALUES('tech','apple'),
-('tech','ibm');
 

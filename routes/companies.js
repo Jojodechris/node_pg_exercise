@@ -17,12 +17,28 @@ router.get("/", async function(req, res, next) {
 });
 
 
-/** GET /[id] - return data about one company: `{cat: cat}` */
+/** GET /[id] - return data(code,name,description,industries) about one company : `{cat: cat}` */
 
+
+// companies.js
 router.get("/:code", async function(req, res, next) {
     try {
-      const companiesQuery = await db.query(
-        "SELECT * FROM companies WHERE code = $1", [req.params.code]);
+      // return data(code,name,description
+      // const companiesQuery = await db.query(
+      //   "SELECT * FROM companies WHERE code = $1", [req.params.code]);
+        // return industry of that company 
+        const companiesQuery = await db.query(`
+        SELECT 
+          c.code AS company_code,
+          c.name AS company_name,
+          c.description AS company_description,
+          i.industry
+        FROM 
+          companies c
+          JOIN industries_companies ic ON c.code = ic.companies_code
+          JOIN industries i ON ic.industries_code = i.code
+        WHERE 
+          c.code = $1`, [req.params.code]);
   
       if (companiesQuery.rows.length === 0) {
         let notFoundError = new Error(`There is no company with code '${req.params.code}`);
